@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Beat checker</title>
+
+<head>
+  <style>
+    div.container {
+      margin: 1px;
+      padding: 5px;
+      height: 95vh;
+    }
+
+    p.big-letter {
+      font-size: 40vw;
+      text-align: center;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sansserif {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 20px;
+    }
+
+    option {
+      height: 30px;
+      padding: 20px;
+    }
+  </style>
+
+  <script>
+    function daysOfSeason(today) {
+      // season starts 1st March (month 2) each year
+      var timeDifference = today - new Date(today.getFullYear(), 2, 1);
+      // millis in day
+      return Math.floor(timeDifference / (3600 * 24000));
+    }
+
+    function findBeat(ticketIndex) {
+      if (!ticketIndex) {
+        ticketIndex = savedColour();
+        document.getElementById("ticket-select").selectedIndex = ticketIndex; 
+      }
+      var today = new Date();
+      //var today = new Date(2020, 5, 11, 12)
+      var beatIndex = (daysOfSeason(today) - parseInt(ticketIndex)) % 3;
+      switch (beatIndex) {
+        case 0:
+          beatName = "Lower";
+          break;
+        case 1:
+          beatName = "Middle";
+          break;
+        default:
+          beatName = "Upper";
+      }
+      console.log(beatName);
+      document.getElementById("beat-name").innerText = beatName;
+      document.getElementById("beat-letter").innerText = beatName.substring(0, 1);
+      setCookie("ticketColour", ticketIndex)
+    }
+
+    function setCookie(cname, cvalue) {
+      var d = new Date();
+      d.setTime(d.getTime() + (30 * 24 * 60 * 60 * 1000));
+      var expires = "expires=" + d.toUTCString();
+      document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+
+    function getCookie(cname) {
+      var name = cname + "=";
+      var decodedCookie = decodeURIComponent(document.cookie);
+      var ca = decodedCookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+          c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+        }
+      }
+      return "";
+    }
+
+    function savedColour() {
+      var ticketColour = getCookie("ticketColour");
+      if (ticketColour != "") {
+        return ticketColour;
+      }
+      else {
+        return "0";
+      }
+    }
+  </script>
+</head>
+
+<body onload="findBeat()">
+  <div class="container sansserif">
+    <h1>Tavy beat check</h1>
+    <form>Select ticket colour:&nbsp;
+      <select id="ticket-select" name="ticket" onchange="findBeat(this.value)">
+        <option value="0">red</option>
+        <option value="1">blue</option>
+        <option value="2">white</option>
+      </select>
+    </form>
+
+    <p>Today you can fish on the <span id="beat-name"></span> beat.</p>
+    <p class="big-letter"><span id="beat-letter"></span></p>
+  </div>
+
+</body>
+
+</html>
