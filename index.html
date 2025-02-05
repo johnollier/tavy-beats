@@ -47,6 +47,7 @@
       var today = new Date();
       //var today = new Date(2020, 5, 11, 12)
       var beatIndex = (daysOfSeason(today) - parseInt(ticketIndex)) % 3;
+      let beatName;
       switch (beatIndex) {
         case 0:
           beatName = "Lower";
@@ -75,8 +76,8 @@
       var name = cname + "=";
       var decodedCookie = decodeURIComponent(document.cookie);
       var ca = decodedCookie.split(';');
-      for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
+      for (const element of ca) {
+        var c = element;
         while (c.charAt(0) == ' ') {
           c = c.substring(1);
         }
