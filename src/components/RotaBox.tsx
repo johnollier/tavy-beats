@@ -24,4 +24,20 @@ const findBeat = (ticketIndex: number) => {
     return beatName;
 }
 
-export default findBeat
+interface BeatProps {
+    beatIndex : string
+    colour: string
+}
+
+const RotaPage = ({beatIndex, colour} : BeatProps) => {
+    const beat = findBeat(parseInt(beatIndex))
+    const beatLetter = beat.substring(0, 1).toUpperCase();
+    return (
+        <div className="container">
+            <p className="beat-text">Today on {colour} you can fish the {beat} beat</p>
+            <h1 className="beat-letter">{beatLetter}</h1>
+        </div>
+    );
+};
+
+export default RotaPage;
