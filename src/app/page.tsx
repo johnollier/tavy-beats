@@ -4,8 +4,9 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <h2>to do </h2>
       </main>
+      <footer className={styles.footer}>
+      </footer>
     </div>
   );
 }
